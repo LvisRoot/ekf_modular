@@ -1,3 +1,13 @@
+#folders
+.settings
+/Debug
+/dataset
+/docs
+
+files
+.cproject
+/src/main.cpp
+
 # Prerequisites
 *.d
 
