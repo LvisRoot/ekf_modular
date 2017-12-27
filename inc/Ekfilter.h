@@ -131,17 +131,22 @@ public:
 		_model = model;
 	}
 
-protected:
+private:
 
 	const double _INITIAL_POST_COV = 5000;
+
+	MatrixXd kGainMult(MatrixXd b);
 
 	/// Estimated state
 	VectorXd _xEst;
 	/// Estimated state covariance matrix
 	MatrixXd _Pest;
 
-	/// Computed Kalman gain
-	MatrixXd _Kgain;
+	/// Innovation Covariance (for Kalmen gain)
+	MatrixXd _Sgain;
+	/// Innovation Covariance pre-multiplier(for Kalmen gain)
+	MatrixXd _Pgain;
+
 
 	EkfSysModel* _model;
 	EkfMeasModel * _meas;
@@ -181,15 +186,15 @@ void Ekfilter::update(const VectorXd & zMeas) {
 
 	_meas->update(zMeas);
 
-	// General K gain calculation
-	_Kgain = _Pest * _meas->Hmeas().transpose() *
-			(_meas->Hmeas() * _Pest * _meas->Hmeas().transpose() + _meas->Rmeas()).inverse();
+	// Compute inovation covariance & pre-multiplier for Kalman gain
+	_Pgain = _Pest * _meas->Hmeas().transpose();
+	_Sgain = (_meas->Hmeas() * _Pest * _meas->Hmeas().transpose() + _meas->Rmeas());
 
 	// General x estimation
-	_xEst = _xEst + _Kgain * (zMeas - _meas->Hmeas() * _xEst);
+	_xEst = _xEst + _Pgain * _Sgain.llt().solve(zMeas - _meas->Hmeas() * _xEst);
 
 	// General P estimation
-	_Pest = (MatrixXd::Identity(_xEst.rows(),zMeas.rows()) - _Kgain * _meas->Hmeas()) * _Pest;
+	_Pest = (MatrixXd::Identity(_xEst.rows(),zMeas.rows()) - _Pgain * _Sgain.llt().solve(_meas->Hmeas())) * _Pest;
 
 }
 

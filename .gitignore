@@ -1,11 +1,13 @@
 #folders
 .settings
+/Release
 /Debug
 /dataset
 /docs
 
 files
 .cproject
+.project
 /src/main.cpp
 
 # Prerequisites

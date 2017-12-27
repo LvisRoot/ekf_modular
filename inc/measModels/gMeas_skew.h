@@ -15,12 +15,12 @@
 
 using namespace Eigen;
 
-class gEkfMeas_skew : public EkfMeasModel{
+class gMeas_skew : public EkfMeasModel{
 public:
 
-	gEkfMeas_skew();
-	gEkfMeas_skew(const MatrixXd& Rmeas);
-	~gEkfMeas_skew(){};
+	gMeas_skew();
+	gMeas_skew(const MatrixXd& Rmeas);
+	~gMeas_skew(){};
 
 	/**
 	 * Perform EKF's update phase of the estimated state with current measurement, according to the measurement model.
@@ -30,20 +30,5 @@ public:
 	 */
 	void update(const VectorXd & zMeas);
 };
-
-inline gEkfMeas_skew::gEkfMeas_skew() {
-	_Rmeas = Matrix3d::Identity();
-	_Gmeas = Matrix3d::Identity();
-	_Hmeas = - Matrix3d::Identity();
-}
-
-inline gEkfMeas_skew::gEkfMeas_skew(const MatrixXd& Rmeas) {
-	_Rmeas = Rmeas;
-	_Gmeas = Matrix3d::Identity();
-	_Hmeas = - Matrix3d::Identity();
-}
-
-inline void gEkfMeas_skew::update(const VectorXd& zMeas) {
-}
 
 #endif /* INC_GEKFMEAS_SKEW_H_ */
