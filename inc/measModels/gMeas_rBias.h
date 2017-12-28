@@ -1,12 +1,12 @@
 /*
- * gEkfMeas_skew.h
+ * gMeas_rBias.h
  *
  *  Created on: Dec 20, 2017
  *      Author: l_vis
  */
 
-#ifndef INC_GEKFMEAS_RBIAS_H_
-#define INC_GEKFMEAS_RBIAS_H_
+#ifndef INC_GMEAS_H_
+#define INC_GMEAS_H_
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
@@ -20,6 +20,7 @@ public:
 
 	gMeas_rBias();
 	gMeas_rBias(const MatrixXd& Rmeas);
+	gMeas_rBias(const double gDev);
 	~gMeas_rBias(){};
 
 	/**

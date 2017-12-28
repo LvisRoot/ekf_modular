@@ -15,7 +15,9 @@ using namespace Eigen;
 class EkfSysModel {
 public:
 
-	//EkfSysModel(){};
+	EkfSysModel(const MatrixXd Qmod, const MatrixXd Amod, const MatrixXd Lmod)
+				: _Qmod(Qmod), _Amod(Amod), _Lmod(Lmod){};
+	EkfSysModel(){};
 	virtual
 	~EkfSysModel(){};
 

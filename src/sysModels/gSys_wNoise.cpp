@@ -4,9 +4,9 @@
  *  Created on: Dec 27, 2017
  *      Author: l_vis
  */
-#include "sysModels/gSys_skew.h"
+#include <sysModels/gSys_wNoise.h>
 
-gSys_skew::gSys_skew() {
+gSys_wNoise::gSys_wNoise() {
 
 	_Qmod = Matrix3d::Identity();
 
@@ -15,14 +15,14 @@ gSys_skew::gSys_skew() {
 	_gRot = AngleAxisd(0, -Vector3d::Zero());
 }
 
-gSys_skew::gSys_skew(const MatrixXd& Qmod) {
+gSys_wNoise::gSys_wNoise(const MatrixXd& Qmod) {
 
 	_Qmod = Qmod;
 
 	_gRot = AngleAxisd(0, -Vector3d::Zero());
 }
 
-void gSys_skew::predict(VectorXd & xEst, const VectorXd & uIn, const double dt){
+void gSys_wNoise::predict(VectorXd & xEst, const VectorXd & uIn, const double dt){
 
 	Vector3d rotVect = dt * uIn;
 

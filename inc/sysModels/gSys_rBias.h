@@ -18,8 +18,8 @@ using namespace Eigen;
 class gSys_rBias : public EkfSysModel {
 public:
 
-	gSys_rBias();
-	gSys_rBias(const MatrixXd & Qmod);
+	//TODO initial bias!!!!!!!
+	gSys_rBias(const double wSigma, const double dBwSigma);
 	~gSys_rBias(){};
 
 	/**
@@ -35,6 +35,11 @@ private:
 
 	/// Estimated gravity vector transformationn espressed as Angle Axis
 	AngleAxisd _gRot;
+
+	/// Gyroscope's noise deviation
+	double _wCov;
+	/// Gyroscope's bias derivative deviation (random walk noise)
+	double _dBwCov;
 };
 
 #endif /* INC_GEKFMODEL_SKEW_H_ */

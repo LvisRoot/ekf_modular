@@ -5,8 +5,8 @@
  *      Author: l_vis
  */
 
-#ifndef INC_GEKFMODEL_SKEW_H_
-#define INC_GEKFMODEL_SKEW_H_
+#ifndef INC_GEKFMODEL_WNOISE_H_
+#define INC_GEKFMODEL_WNOISE_H_
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
@@ -15,12 +15,12 @@
 
 using namespace Eigen;
 
-class gSys_skew : public EkfSysModel {
+class gSys_wNoise : public EkfSysModel {
 public:
 
-	gSys_skew();
-	gSys_skew(const MatrixXd & Qmod);
-	~gSys_skew(){};
+	gSys_wNoise();
+	gSys_wNoise(const MatrixXd & Qmod);
+	~gSys_wNoise(){};
 
 	/**
 	 * Perform EKF'S prediction phase with current input sample prediction, according to the states dynamic model.

@@ -1,12 +1,12 @@
 /*
- * gEkfMeas_skew.h
+ * gMeas.h
  *
  *  Created on: Dec 20, 2017
  *      Author: l_vis
  */
 
-#ifndef INC_GEKFMEAS_SKEW_H_
-#define INC_GEKFMEAS_SKEW_H_
+#ifndef INC_GMEAS_H_
+#define INC_GMEAS_H_
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
@@ -15,12 +15,13 @@
 
 using namespace Eigen;
 
-class gMeas_skew : public EkfMeasModel{
+class gMeas : public EkfMeasModel{
 public:
 
-	gMeas_skew();
-	gMeas_skew(const MatrixXd& Rmeas);
-	~gMeas_skew(){};
+	gMeas();
+	gMeas(const MatrixXd& Rmeas);
+	gMeas(const double gDev);
+	~gMeas(){};
 
 	/**
 	 * Perform EKF's update phase of the estimated state with current measurement, according to the measurement model.

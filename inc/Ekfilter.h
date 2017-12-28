@@ -35,12 +35,6 @@ public:
 	 */
 	Ekfilter(EkfSysModel* model, EkfMeasModel* meas, const MatrixXd & Qmod, const MatrixXd & Rmeas);
 
-	Ekfilter(EkfSysModel* model, EkfMeasModel* meas, const MatrixXd & Qmod):
-		Ekfilter(model, meas, Qmod, meas->Rmeas()){};
-
-	Ekfilter(EkfSysModel* model, EkfMeasModel* meas, const MatrixXd & Rmeas):
-		Ekfilter(model, meas, model->Qmod(), Rmeas){};
-
 	Ekfilter(EkfSysModel* model, EkfMeasModel* meas) :
 			Ekfilter(model, meas, model->Qmod(), meas->Rmeas()){};
 

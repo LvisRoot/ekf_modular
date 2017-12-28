@@ -5,41 +5,38 @@
  *      Author: l_vis
  */
 #include "sysModels/gSys_rBias.h"
+#include "SkewEigen.h"
 
-gSys_rBias::gSys_rBias() {
 
-	_Qmod = Matrix3d::Identity();
+//TODO initial bias!!!!!!!
+gSys_rBias::gSys_rBias(const double wSigma, const double dBwSigma):
+		EkfSysModel(MatrixXd::Identity(6,6),
+					MatrixXd::Identity(6,6),
+					MatrixXd::Identity(6,6)),
+		_gRot(AngleAxisd::Identity()),
+		_wCov(wSigma * wSigma),
+		_dBwCov(dBwSigma * dBwSigma){};
 
-	_Lmod = Matrix3d::Identity();
 
-	_gRot = AngleAxisd(0, -Vector3d::Zero());
-}
-
-gSys_rBias::gSys_rBias(const MatrixXd& Qmod) {
-
-	_Qmod = Qmod;
-
-	_gRot = AngleAxisd(0, -Vector3d::Zero());
-}
 
 void gSys_rBias::predict(VectorXd & xEst, const VectorXd & uIn, const double dt){
 
-	Vector3d rotVect = dt * (uIn + xEst.head(3));
+	Vector3d rotVect = dt * (uIn - xEst.head(3));
 
 	if (rotVect.norm() == 0)
 		_gRot = AngleAxisd::Identity();
 	else
 		_gRot = AngleAxisd(rotVect.norm(), rotVect / rotVect.norm());
 
-	_Amod = _gRot.toRotationMatrix();
+	xEst.tail(3) = _gRot.matrix() * xEst.tail(3);
 
-	xEst = _gRot.matrix() * xEst;
+	_Amod.block<3,3>(3,0) = dt * EIGEN_SKEW(xEst.tail(3));
+	_Amod.block<3,3>(3,3) = _gRot.matrix();
 
-	_Lmod  <<	0			,-xEst[2]	,xEst[1]	,
-				xEst[2]		,0			,-xEst[0]	,
-				-xEst[1]	,xEst[0]	,0			;
+	_Lmod.block<3,3>(3,3) = - dt * EIGEN_SKEW(xEst.tail(3));
 
-	_Lmod *= dt;
+	_Qmod.block<3,3>(0,0) = _dBwCov * dt * dt *  MatrixXd::Identity(3,3);
+	_Qmod.block<3,3>(3,3) = _wCov * MatrixXd::Identity(3,3);
 }
 
 
